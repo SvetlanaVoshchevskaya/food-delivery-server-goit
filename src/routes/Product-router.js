@@ -22,7 +22,7 @@ const productRouter = (request, response) => {
         })
     }
 
-    else if (!Number(id) && parseUrl.query === null) {
+    if (!Number(id) && parseUrl.query === null) {
         fs.readFile(pathFile, (error, data) => {
             if (error) {
                 response.statusCode = 404;
