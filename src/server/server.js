@@ -1,17 +1,22 @@
-const http = require('http');
-const url = require('url');
+const express = require('express');
 const router = require('../routes/route');
+const bodyParser = require("body-parser");
+const app = express();
 
-const server = port => {
-    const createNewServer = http.createServer((request, response) => {
+const errorHandler = (err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send("Something broke!");
+};
 
-        const parseUrl = url.parse(request.url);
-        const activeRouter = router[parseUrl.pathname]
-        activeRouter(request, response)
-    })
+app
+  .use(bodyParser.urlencoded({ extended: false }))
+  .use(bodyParser.json())
+  .use("/", router)
+  .use(errorHandler);
 
-    createNewServer.listen(port);
-}
 
-module.exports = server;
+app.listen(3000)
+
+
+
 
